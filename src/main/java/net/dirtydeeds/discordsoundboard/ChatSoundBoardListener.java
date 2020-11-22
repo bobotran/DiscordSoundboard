@@ -385,7 +385,13 @@ public class ChatSoundBoardListener extends ListenerAdapter {
 
     private void volumeCommand(MessageReceivedEvent event, String requestingUser, String message) {
         int fadeoutIndex = message.indexOf('~');
-        int newVol = Integer.parseInt(message.substring(8, (fadeoutIndex > -1) ? fadeoutIndex - 1 : message.length()));
+        int newVol;
+        try{
+            newVol = Integer.parseInt(message.substring(8, (fadeoutIndex > -1) ? fadeoutIndex - 1 : message.length()));
+        } catch (Exception e){
+            replyByPrivateMessage(event, "*Volume set to " + soundPlayer.getSoundPlayerVolume() + "%*");
+            return;
+        }
 
         if (newVol >= 1 && newVol <= 100) {
             muted = false;
